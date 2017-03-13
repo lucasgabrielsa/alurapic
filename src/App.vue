@@ -1,7 +1,11 @@
 <template>
  <div>
   <h1 v-text="titulo"></h1>
-  <img v-for="foto in fotos" :src="foto.url" :alt="foto.titulo" class="foto-width"/>  
+  <ul>
+    <li v-for="foto in fotos">
+      <img :src="foto.url" :alt="foto.titulo" class="foto-width"/>
+    </li>
+  </ul>  
  </div>  
 </template>
 
@@ -28,5 +32,8 @@ export default {
 <style>
 .foto-width {
   width: 150px;
+}
+ul {
+  list-style-type: none;
 }
 </style>
