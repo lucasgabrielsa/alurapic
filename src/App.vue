@@ -1,39 +1,67 @@
 <template>
- <div>
-  <h1 v-text="titulo"></h1>
-  <ul>
-    <li v-for="foto in fotos">
-      <img :src="foto.url" :alt="foto.titulo" class="foto-width"/>
+ <div class="corpo">
+  <h1 v-text="titulo" class="texto-centralizado"></h1>
+  <ul class="lista-fotos">
+    <li v-for="foto in fotos" class="lista-fotos-item">
+      <meu-painel :titulo="foto.titulo">
+         <img :src="foto.url" :alt="foto.titulo" class="imagem-responsiva"/>
+      </meu-painel>       
     </li>
   </ul>  
  </div>  
 </template>
 
 <script>
+import Painel from './components/shared/painel/Painel.vue';
+
 export default {
+
+  components: {
+    'meu-painel': Painel
+  },
+
   data() {
     return {
       titulo: 'AluraPic',
-      fotos: [
-        {
-         url: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcRxmCGpcrjAq6DDT8hVt163lO1YulUCaunuv9Yp-BmE1IPb_P2g', 
-         titulo: 'cachorro'
-       },
-      {
-         url:'https://s-media-cache-ak0.pinimg.com/736x/32/06/fb/3206fba0ed2a3d196460765e1f650905.jpg',
-         titulo: 'gato'
-      }
-      ]       
+      fotos: []       
     }
+  },
+
+  methods: {
+    pegarFotos() {
+      this.$http.get('http://localhost:3000/v1/fotos')    
+      .then(res => res.json())
+      .then(data => this.fotos = data, erro => console.log(erro));
+    }
+  },
+
+  created() {
+      this.pegarFotos();
   } 
 }
 </script>
 
-<style>
-.foto-width {
-  width: 150px;
+<style scoped>
+.corpo {
+  font-family: 'Roboto',sans-serif;
+  width: 70%;
+  margin:0 auto;
 }
+.texto-centralizado {
+  text-align: center;
+}
+
+.lista-fotos .lista-fotos-item {
+  display: inline-block;
+}
+
+.imagem-responsiva  {
+  width: 100%;
+}
+
 ul {
   list-style-type: none;
 }
+
+
 </style>
