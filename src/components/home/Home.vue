@@ -4,6 +4,8 @@
             <h1 v-meu-transform.animate
                 v-text="titulo"
                 class="texto-centralizado"></h1>
+            <p v-show="mensagem"
+               class="texto-centralizado">{{ mensagem }}</p>
         </div>
         <input type="search"
                class="filtro Normal input"
@@ -17,9 +19,9 @@
                                        :url="foto.url"
                                        :titulo="foto.titulo" />
                     <!--
-                    <imagem-responsiva v-meu-transform="{ incremento:15, animate: true }"
-                                       :url="foto.url"
-                                       :titulo="foto.titulo" /> -->
+                                <imagem-responsiva v-meu-transform="{ incremento:15, animate: true }"
+                                                   :url="foto.url"
+                                                   :titulo="foto.titulo" /> -->
                     <!--<meu-botao tipo="button" rotulo="Remover" @click.native="removerFoto(foto)"></meu-botao>-->
                     <meu-botao tipo="button"
                                rotulo="Remover"
@@ -58,7 +60,8 @@ export default {
         return {
             titulo: 'AluraPic',
             fotos: [],
-            filtro: ''
+            filtro: '',
+            mensagem: ''
         }
     },
 
@@ -68,11 +71,20 @@ export default {
             this.$http.get('http://localhost:3000/v1/fotos')
                 .then(res => res.json())
                 .then(data => this.fotos = data, erro => console.log(erro));
+
+            /*console.log('imprimindo fotos')
+            console.log(this.fotos)*/
         },
 
         removerFoto(foto, $event) {
-            console.log(foto.titulo + ' excluida com sucesso!');
-            console.log($event.msg);
+            this.$http.delete(`http://localhost:3000/v1/fotos/${foto._id}`)
+                .then(()=> {
+                    let indice = this.fotos.indexOf(foto);
+                    this.fotos.splice(indice, 1);
+                    this.mensagem = 'Foto incluida com sucesso!';
+                }, erro => {
+                    this.mensagem = 'Não foi possível excluir a foto!'
+                })
         }
 
 
