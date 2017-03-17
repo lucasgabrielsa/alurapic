@@ -13,7 +13,7 @@
             <li v-for="foto in fotosComFiltro"
                 class="lista-fotos-item">
                 <meu-painel :titulo="foto.titulo">
-                    <imagem-responsiva v-meu-transform.animate.reverse="15"
+                    <imagem-responsiva v-meu-transform:scale.animate="1.5"
                                        :url="foto.url"
                                        :titulo="foto.titulo" />
                     <!--
@@ -33,9 +33,14 @@
 </template>
 
 <script>
+/* components */
 import Painel from '../shared/painel/Painel.vue';
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
 import Botao from '../shared/botao/Botao.vue';
+
+/* directives */
+import transform from '../../directives/Transform';
+
 
 export default {
 
@@ -43,6 +48,10 @@ export default {
         'meu-painel': Painel,
         'imagem-responsiva': ImagemResponsiva,
         'meu-botao': Botao
+    },
+
+    directives: {
+        'meu-transform': transform
     },
 
     data() {

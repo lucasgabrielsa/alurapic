@@ -58,12 +58,18 @@ painel-fade-enter-active // quando o elemento esta sendo incluído
 painel-fade-leave-active // quando o elemento esta sendo removido
 */
 
+/* efeitos de transicao */
+
 .painel-fade-enter, .painel-fade-leave-active {
   opacity: 0
 }
 
 .painel-fade-enter-active, .painel-fade-leave-active {
   transition: opacity .4s
+}
+
+.painel-conteudo {
+  overflow: hidden;
 }
 
 </style>
