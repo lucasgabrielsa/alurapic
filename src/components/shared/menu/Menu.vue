@@ -4,13 +4,13 @@
         <a class="nav-item">
            <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo">
         </a>
-        <router-link active-class="is-active" :key="rota.id" :to="rota.path ? rota.path : '/'" v-for="rota in rotas" class="nav-item is-tab is-hidden-mobile" exact>{{ rota.name }}</router-link>
+        <router-link active-class="is-active" :key="rota.id" :to="rota.path ? rota.path : '/'" v-for="rota in rotas" class="nav-item is-tab is-hidden-mobile" exact>{{ rota.nome }}</router-link>
     </div>
     <!--
     <nav>
         <ul v-for="rota in rotas">       
         <li>
-            <router-link :to="rota.path ? rota.path : '/'">{{ rota.name }}</router-link>
+            <router-link :to="rota.path ? rota.path : '/'">{{ rota.nome }}</router-link>
         </li>
         </ul>
     </nav>

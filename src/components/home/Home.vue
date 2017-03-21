@@ -43,6 +43,8 @@ import Botao from '../shared/botao/Botao.vue';
 /* directives */
 import transform from '../../directives/Transform';
 
+/* classes */
+import FotoService from '../../domain/foto/FotoService';
 
 export default {
 
@@ -68,15 +70,45 @@ export default {
     methods: {
 
         pegarFotos() {
+
+             this.service.lista().then(fotos => this.fotos = fotos, err => console.log(err));
+             console.log(this.service);
+
+           /*
+          this.resource
+            .query()
+            .then(res => res.json())
+            .then(fotos => this.fotos = fotos, err => console.log(err));
+          
             this.$http.get('http://localhost:3000/v1/fotos')
                 .then(res => res.json())
                 .then(data => this.fotos = data, erro => console.log(erro));
-
-            /*console.log('imprimindo fotos')
-            console.log(this.fotos)*/
+            */            
         },
 
         removerFoto(foto, $event) {
+
+            this.service.apaga(foto._id)             
+            .then(()=> {
+                    let indice = this.fotos.indexOf(foto);
+                    this.fotos.splice(indice, 1);
+                    this.mensagem = 'Foto incluida com sucesso!';
+                }, erro => {
+                    this.mensagem = 'Não foi possível excluir a foto!'
+                });
+
+
+            /*
+            this.resource.delete({ id: foto._id })
+            .then(()=> {
+                    let indice = this.fotos.indexOf(foto);
+                    this.fotos.splice(indice, 1);
+                    this.mensagem = 'Foto incluida com sucesso!';
+                }, erro => {
+                    this.mensagem = 'Não foi possível excluir a foto!'
+                });
+
+            /*
             this.$http.delete(`http://localhost:3000/v1/fotos/${foto._id}`)
                 .then(()=> {
                     let indice = this.fotos.indexOf(foto);
@@ -84,7 +116,7 @@ export default {
                     this.mensagem = 'Foto incluida com sucesso!';
                 }, erro => {
                     this.mensagem = 'Não foi possível excluir a foto!'
-                })
+                })*/
         }
 
 
@@ -103,8 +135,15 @@ export default {
 
     },
 
-    created() {
+    created() {      
+
+        this.service = new FotoService(this.$resource);    
         this.pegarFotos();
+        
+        // agora conseguimos acessar o recurso configurado em outros métodos do nosso componente
+        //this.resource = this.$resource('v1/fotos{/id}');
+
+   
     }
 
 }
