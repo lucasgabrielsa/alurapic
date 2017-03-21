@@ -21,7 +21,7 @@ import Menu from './components/shared/menu/Menu.vue';
     },
     data() {
       return {
-        routes
+        routes: routes.filter(rota => rota.menu)
       }
     }
   }

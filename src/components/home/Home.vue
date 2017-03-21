@@ -23,6 +23,9 @@
                                                    :url="foto.url"
                                                    :titulo="foto.titulo" /> -->
                     <!--<meu-botao tipo="button" rotulo="Remover" @click.native="removerFoto(foto)"></meu-botao>-->
+                    <router-link :to="{ name:'Cadastro', params:{ id:foto._id }}">
+                        <meu-botao tipo="button" rotulo="Alterar"></meu-botao>
+                    </router-link> 
                     <meu-botao tipo="button"
                                rotulo="Remover"
                                :confirmacao="true"
