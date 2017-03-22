@@ -12,21 +12,34 @@ export default class FotoService {
     lista() {
          return this._resource
               .query()
-              .then(res => res.json());
+              .then(res => res.json(), erro => {
+                  console.log(erro);
+                  throw new Error('Não foi possivel obter as fotos.');
+              });
     }
 
 
-    cadastra(foto) {              
-         return this._resource.save(foto);               
-    }
+    cadastra(foto) {
 
-    atualiza(foto) {
-           return this._resource.update( { id: foto._id }, foto);
+        if(foto._id) {
+
+            return this._resource
+                .update({ id: foto._id}, foto);
+
+        } else {
+            return this._resource
+                .save(foto);    
+        }
+
     }
 
 
     apaga(id) {
-        return this._resource.delete( { id });
+        return this._resource.delete( { id })
+            .then(null, erro => { 
+                console.log(erro);
+                throw new Error('Não foi possível deletar a foto.');
+            });
     }
 
 

@@ -10,7 +10,7 @@
         <input type="search"
                class="filtro Normal input"
                placeholder="Pesquise pelo Título"
-               v-model="filtro" />
+               v-model="filtro" />     
         <ul class="lista-fotos">
             <li v-for="foto in fotosComFiltro"
                 class="lista-fotos-item">
@@ -73,7 +73,10 @@ export default {
     methods: {
 
         atualizaFotos() {
-            this.service.lista().then(fotos => this.fotos = fotos, err => console.log(err));
+            this.service.lista().then(fotos => this.fotos = fotos, 
+                erro => { 
+                    this.mensagem = erro.message;
+            });
         },
 
 
@@ -102,7 +105,7 @@ export default {
                     this.fotos.splice(indice, 1);
                     this.mensagem = 'Foto incluida com sucesso!';
                 }, erro => {
-                    this.mensagem = 'Não foi possível excluir a foto!'
+                    this.mensagem = erro.message;
                 });
 
 
@@ -132,7 +135,7 @@ export default {
 
     computed: {
 
-        fotosComFiltro() {
+        fotosComFiltro() {            
             if (this.filtro) {
                 let exp = new RegExp(this.filtro.trim(), 'i');
                 return this.fotos.filter(foto => exp.test(foto.titulo));
@@ -143,17 +146,21 @@ export default {
 
     },
 
-    created() {      
+    created() {
 
-        this.service = new FotoService(this.$resource);    
-        this.atualizaFotos();        
-        // agora conseguimos acessar o recurso configurado em outros métodos do nosso componente
-        //this.resource = this.$resource('v1/fotos{/id}');   
-    }, 
+        this.service = new FotoService(this.$resource);
 
-    updated() {
-       this.atualizaFotos();        
+        this.service.lista().then(fotos => this.fotos = fotos, err => this.mensagem = err.message);
+
+        /*
+       console.log('created do Home.vue');
+       this.service = new FotoService(this.$resource);    
+       this.atualizaFotos();                 
+       */             
+       // agora conseguimos acessar o recurso configurado em outros métodos do nosso componente
+       //this.resource = this.$resource('v1/fotos{/id}');           
     }
+  
 
 }
 </script>

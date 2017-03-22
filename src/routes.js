@@ -1,4 +1,7 @@
-import Cadastro from './components/cadastro/Cadastro.vue';
+//import Cadastro from './components/cadastro/Cadastro.vue';
+//lazyloading - carregamento apenas qdo o usuario usar o recurso
+//gera dois arquivos de build - dento da pasta dist
+const Cadastro = () => System.import('./components/cadastro/Cadastro.vue');
 
 import Home from './components/home/Home.vue';
 

@@ -9,7 +9,10 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bulma": "^0.4.0",
+    "jquery": "^3.1.1",
+    "vee-validate": "^2.0.0-beta.18",
     "vue": "^2.2.1",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.1.1"
@@ -21,6 +24,10 @@
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "vue-loader": "^11.1.4",
     "vue-template-compiler": "^2.2.1",
     "webpack": "^2.2.0",

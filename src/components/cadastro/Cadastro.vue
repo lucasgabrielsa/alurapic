@@ -9,19 +9,26 @@
         <form @submit.prevent="grava">
             <div class="controle">
                 <label for="titulo">TÍTULO</label>
-                <input id="titulo"
+                <input v-validate data-vv-rules="required|min:3|max:30"
+                       data-vv-as="título"
+                       id="titulo"
                        autocomplete="off"
+                       name="titulo"
                        v-model="foto.titulo"
                        class="input">
+                <span class="erro" v-show="errors.has('titulo')">{{ errors.first('titulo') }}</span>
             </div>
     
             <div class="controle">
                 <label for="url">URL</label>
-                <input id="url"
-                       v-model.lazy="foto.url"
+                <input v-validate data-vv-rules="required"
+                       id="url"
+                       name="url"
+                       v-model="foto.url"
                        autocomplete="off"
                        class="input">
                 <imagem-responsiva v-show="foto.url" :url="foto.url" :titulo="foto.titulo"/>
+                <span class="erro" v-show="errors.has('url')">{{ errors.first('url') }}</span>
             </div>
     
             <div class="controle">
@@ -63,17 +70,23 @@ export default {
     },
 
     methods: {
-        grava() {
-            //enviar os dados para api para GRAVAR
+       grava() {
 
-            if(this.foto._id) {
-                //update
-                this.service.atualiza(this.foto);
-                this.$router.push( { name:'Home' } );
-            } else {
-                this.service.cadastra(this.foto)
-                    .then(() => this.foto = new Foto(), erro => console.log(erro));
-            }
+          this.$validator.validateAll()
+            .then(success => {
+
+                if(success) {
+                    this.service
+                        .cadastra(this.foto)
+                        .then(() => {
+                        if(this.id) this.$router.push({ name: 'Home' });
+                        this.foto = new Foto();
+                        }, err => console.log(err));
+                }
+               
+            });            
+
+      },
             
 
            /*
@@ -84,10 +97,8 @@ export default {
 
              this.$http.post('http://localhost:3000/v1/fotos', this.foto)
             .then(() => this.foto = new Foto(), erro => console.log(erro));            
-            */
-
-            this.foto = new Foto()
-        }
+            */         
+        
     },
 
     components: {
@@ -147,5 +158,9 @@ export default {
 
 .centralizado {
     text-align: center;
+}
+
+.erro {
+    color: red;
 }
 </style>
