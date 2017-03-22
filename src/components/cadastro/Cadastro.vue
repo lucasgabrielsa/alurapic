@@ -1,8 +1,11 @@
 <template>
     <div>
         <h1 class="centralizado tituloJanela">Cadastro</h1>
-        <h2 class="centralizado">{{foto}}</h2>
+        <h2 class="centralizado">{{ foto.titulo }}</h2>
     
+        <h2 class="centralizado" v-if="foto._id">Alterando</h2>
+        <h2 class="centralizado" v-else>Incluindo</h2>
+        
         <form @submit.prevent="grava">
             <div class="controle">
                 <label for="titulo">TÍTULO</label>
@@ -32,9 +35,8 @@
             <div class="centralizado">
                 <meu-botao rotulo="GRAVAR"
                            tipo="submit" />
-                <router-link to="{ name: home}">
-                    <meu-botao rotulo="VOLTAR"
-                               tipo="button" />
+                <router-link :to=" { name:'Home' }">
+                    <meu-botao rotulo="VOLTAR" tipo="button" />
                 </router-link>
             </div>
     
@@ -55,15 +57,24 @@ export default {
 
     data() {
         return {
-            foto: new Foto()
+            foto: new Foto(), 
+            id: this.$route.params.id
         }
     },
 
     methods: {
         grava() {
             //enviar os dados para api para GRAVAR
-            this.service.cadastra(this.foto)
-                .then(() => this.foto = new Foto(), erro => console.log(erro));
+
+            if(this.foto._id) {
+                //update
+                this.service.atualiza(this.foto);
+                this.$router.push( { name:'Home' } );
+            } else {
+                this.service.cadastra(this.foto)
+                    .then(() => this.foto = new Foto(), erro => console.log(erro));
+            }
+            
 
            /*
             this.resource
@@ -88,6 +99,14 @@ export default {
 
         /*this.resource = this.$resource('v1/fotos');*/
         this.service = new FotoService(this.$resource);
+
+        /* testando para ver se id tem valor */ 
+        if(this.id) {           
+                       
+            this.service.busca(this.id)
+                .then(foto => this.foto = foto);
+            
+        }
 
     }
 

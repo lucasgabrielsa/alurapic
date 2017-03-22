@@ -10,7 +10,7 @@
     <nav>
         <ul v-for="rota in rotas">       
         <li>
-            <router-link :to="rota.path ? rota.path : '/'">{{ rota.nome }}</router-link>
+            <router-link :to="rota.path ? rota.path : '/'">{{ rota.name }}</router-link>
         </li>
         </ul>
     </nav>

@@ -19,11 +19,11 @@
                                        :url="foto.url"
                                        :titulo="foto.titulo" />
                     <!--
-                                <imagem-responsiva v-meu-transform="{ incremento:15, animate: true }"
+                    <imagem-responsiva v-meu-transform="{ incremento:15, animate: true }"
                                                    :url="foto.url"
                                                    :titulo="foto.titulo" /> -->
                     <!--<meu-botao tipo="button" rotulo="Remover" @click.native="removerFoto(foto)"></meu-botao>-->
-                    <router-link :to="{ name:'Cadastro', params:{ id:foto._id }}">
+                    <router-link :to="{ name:'Altera', params: { id:foto._id } }">
                         <meu-botao tipo="button" rotulo="Alterar"></meu-botao>
                     </router-link> 
                     <meu-botao tipo="button"
@@ -72,12 +72,16 @@ export default {
 
     methods: {
 
-        pegarFotos() {
+        atualizaFotos() {
+            this.service.lista().then(fotos => this.fotos = fotos, err => console.log(err));
+        },
 
-             this.service.lista().then(fotos => this.fotos = fotos, err => console.log(err));
-             console.log(this.service);
 
-           /*
+        pegarFotos() {   
+          
+          /*
+          this.service.lista().then(fotos => this.fotos = fotos, err => console.log(err));             
+
           this.resource
             .query()
             .then(res => res.json())
@@ -88,6 +92,7 @@ export default {
                 .then(data => this.fotos = data, erro => console.log(erro));
             */            
         },
+        
 
         removerFoto(foto, $event) {
 
@@ -141,12 +146,13 @@ export default {
     created() {      
 
         this.service = new FotoService(this.$resource);    
-        this.pegarFotos();
-        
+        this.atualizaFotos();        
         // agora conseguimos acessar o recurso configurado em outros métodos do nosso componente
-        //this.resource = this.$resource('v1/fotos{/id}');
+        //this.resource = this.$resource('v1/fotos{/id}');   
+    }, 
 
-   
+    updated() {
+       this.atualizaFotos();        
     }
 
 }
